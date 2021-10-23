@@ -2,14 +2,6 @@ resource "docker_container" "pi_hole" {
   name  = var.pi_hole_container_name
   image = docker_image.pi_hole_image.latest
 
-  dns        = []
-  dns_opts   = []
-  dns_search = []
-  group_add  = []
-  log_opts   = {}
-  sysctls    = {}
-  tmpfs      = {}
-
   ports {
     internal = 53
     external = var.dns_port
@@ -55,5 +47,13 @@ resource "docker_container" "pi_hole" {
     read_only      = false
   }
 
-  env = concat(["TZ=${var.local_timezone}", "WEBPASSWORD=${var.web_password}", "ServerIp=${var.server_ip}"], var.optional_variables, var.advanced_variables)
+  env = concat(
+    [
+      "TZ=${var.local_timezone}",
+      "WEBPASSWORD=${var.web_password}",
+      "ServerIp=${var.server_ip}"
+    ],
+    var.optional_variables,
+    var.advanced_variables
+  )
 }
