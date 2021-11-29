@@ -2,6 +2,8 @@ resource "docker_container" "pi_hole" {
   name  = var.pi_hole_container_name
   image = docker_image.pi_hole_image.latest
 
+  restart = var.restart_policy
+
   ports {
     internal = 53
     external = var.dns_port
